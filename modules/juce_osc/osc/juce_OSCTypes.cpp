@@ -30,6 +30,7 @@ const OSCType OSCTypes::int32   = 'i';
 const OSCType OSCTypes::float32 = 'f';
 const OSCType OSCTypes::string  = 's';
 const OSCType OSCTypes::blob    = 'b';
+const OSCType OSCTypes::boolean = 'T';
 const OSCType OSCTypes::colour  = 'r';
 
 uint32 OSCColour::toInt32() const

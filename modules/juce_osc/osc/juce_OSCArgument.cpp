@@ -29,6 +29,7 @@ namespace juce
 OSCArgument::OSCArgument (int32 v)              : type (OSCTypes::int32),   intValue (v) {}
 OSCArgument::OSCArgument (float v)              : type (OSCTypes::float32), floatValue (v) {}
 OSCArgument::OSCArgument (const String& s)      : type (OSCTypes::string),  stringValue (s) {}
+OSCArgument::OSCArgument (bool  B)              : type (OSCTypes::boolean),  boolValue (B) {}
 OSCArgument::OSCArgument (MemoryBlock b)        : type (OSCTypes::blob),    blob (std::move (b)) {}
 OSCArgument::OSCArgument (OSCColour c)          : type (OSCTypes::colour),  intValue ((int32) c.toInt32()) {}
 
@@ -50,6 +51,16 @@ int32 OSCArgument::getInt32() const noexcept
     jassertfalse; // you must check the type of an argument before attempting to get its value!
     return 0;
 }
+    
+bool OSCArgument::getBoolean() const noexcept
+{
+    if (isBoolean())
+        return boolValue;
+    
+    jassertfalse; // you must check the type of an argument before attempting to get its value!
+    return 0;
+}
+    
 
 float OSCArgument::getFloat32() const noexcept
 {
@@ -121,6 +132,7 @@ public:
             expect (! arg.isString());
             expect (! arg.isBlob());
             expect (! arg.isColour());
+            expect (! arg.isBoolean());
 
             expect (arg.getInt32() == value);
         }
@@ -137,6 +149,7 @@ public:
             expect (! arg.isString());
             expect (! arg.isBlob());
             expect (! arg.isColour());
+            expect (! arg.isBoolean());
 
             expect (arg.getFloat32() == value);
         }
@@ -152,6 +165,7 @@ public:
             expect (arg.isString());
             expect (! arg.isBlob());
             expect (! arg.isColour());
+            expect (! arg.isBoolean());
 
             expect (arg.getString() == value);
         }
@@ -166,6 +180,7 @@ public:
             expect (arg.isString());
             expect (! arg.isBlob());
             expect (! arg.isColour());
+            expect (! arg.isBoolean());
 
             expect (arg.getString() == "Hello, World!");
         }
@@ -181,10 +196,27 @@ public:
             expect (! arg.isString());
             expect (arg.isBlob());
             expect (! arg.isColour());
+            expect (! arg.isBoolean());
 
             expect (arg.getBlob() == blob);
         }
-
+        
+        beginTest ("Boolean");
+        {
+            bool value = true;
+            OSCArgument arg (boolean);
+            
+            expect (arg.getType() == OSCTypes::boolean);
+            expect (! arg.isInt32());
+            expect (! arg.isFloat32());
+            expect (! arg.isString());
+            expect (arg.isBoolean());
+            expect (! arg.isBlob());
+            expect (! arg.isColour());
+            
+            expect (arg.getboolean() == boolean);
+        }
+        
         beginTest ("Colour");
         {
             Random rng = getRandom();
@@ -203,6 +235,7 @@ public:
                 expect (! arg.isFloat32());
                 expect (! arg.isString());
                 expect (! arg.isBlob());
+                expect (! arg.isBoolean());
                 expect (arg.isColour());
 
                 expect (arg.getColour().toInt32() == col.toInt32());

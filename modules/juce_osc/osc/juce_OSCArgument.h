@@ -45,6 +45,8 @@ public:
 
     /** Constructs an OSCArgument with type float32 and a given value. */
     OSCArgument (float value);
+    
+    OSCArgument (bool value);
 
     /** Constructs an OSCArgument with type string and a given value */
     OSCArgument (const String& value);
@@ -73,6 +75,9 @@ public:
 
     /** Returns whether the type of the OSCArgument is string. */
     bool isString() const noexcept          { return type == OSCTypes::string; }
+    
+    /** Returns whether the type of the OSCArgument is string. */
+    bool isBoolean() const noexcept          { return type == OSCTypes::boolean; }
 
     /** Returns whether the type of the OSCArgument is blob. */
     bool isBlob() const noexcept            { return type == OSCTypes::blob; }
@@ -89,6 +94,8 @@ public:
         If the type of the OSCArgument is not float32, the behaviour is undefined.
     */
     float getFloat32() const noexcept;
+    
+    bool getBoolean() const noexcept;
 
     /** Returns the value of the OSCArgument as a string.
         If the type of the OSCArgument is not string, the behaviour is undefined.
@@ -115,8 +122,11 @@ private:
     {
         int32 intValue;
         float floatValue;
+        
+        
     };
-
+    
+    bool boolValue;
     String stringValue;
     MemoryBlock blob;
 };

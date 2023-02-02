@@ -128,6 +128,8 @@ public:
         and adds it to the OSCMessage object.
     */
     void addFloat32 (float value);
+    
+    void addBoolean (bool);
 
     /** Creates a new OSCArgument of type string with the given value,
         and adds it to the OSCMessage object.

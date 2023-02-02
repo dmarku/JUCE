@@ -1,4 +1,4 @@
-/*
+    /*
   ==============================================================================
 
    This file is part of the JUCE library.
@@ -49,6 +49,7 @@ public:
     static const OSCType int32;
     static const OSCType float32;
     static const OSCType string;
+    static const OSCType boolean;
     static const OSCType blob;
     static const OSCType colour;
 
@@ -57,6 +58,7 @@ public:
         return type == OSCTypes::int32
             || type == OSCTypes::float32
             || type == OSCTypes::string
+            || type == OSCTypes::boolean
             || type == OSCTypes::blob
             || type == OSCTypes::colour;
     }

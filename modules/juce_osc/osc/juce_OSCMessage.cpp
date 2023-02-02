@@ -90,6 +90,7 @@ void OSCMessage::clear()
 //==============================================================================
 void OSCMessage::addInt32 (int32 value)             { arguments.add (OSCArgument (value)); }
 void OSCMessage::addFloat32 (float value)           { arguments.add (OSCArgument (value)); }
+void OSCMessage::addBoolean (bool value)            { arguments.add (OSCArgument (value)); }
 void OSCMessage::addString (const String& value)    { arguments.add (OSCArgument (value)); }
 void OSCMessage::addBlob (MemoryBlock blob)         { arguments.add (OSCArgument (std::move (blob))); }
 void OSCMessage::addColour (OSCColour colour)       { arguments.add (OSCArgument (colour)); }
@@ -121,6 +122,7 @@ public:
             const float testFloat = 3.14159f;
             const String testString = "Hello, World!";
             const OSCColour testColour = { 10, 20, 150, 200 };
+            const bool testBool = true;
 
             const uint8 testBlobData[5] = { 0xBB, 0xCC, 0xDD, 0xEE, 0xFF };
             const MemoryBlock testBlob (testBlobData,  sizeof (testBlobData));
@@ -129,6 +131,7 @@ public:
             msg.addFloat32 (testFloat);
             msg.addString (testString);
             msg.addBlob (testBlob);
+            msg.addBoolean (testBool);
             msg.addColour (testColour);
 
             expectEquals (msg.size(), numTestArgs);
@@ -138,18 +141,21 @@ public:
             expectEquals (msg[2].getType(), OSCTypes::string);
             expectEquals (msg[3].getType(), OSCTypes::blob);
             expectEquals (msg[4].getType(), OSCTypes::colour);
+            expectEquals (msg[5].getType(), OSCTypes::boolean);
 
             expect (msg[0].isInt32());
             expect (msg[1].isFloat32());
             expect (msg[2].isString());
             expect (msg[3].isBlob());
             expect (msg[4].isColour());
+            expect (msg[5].isBoolean());
 
             expectEquals (msg[0].getInt32(), testInt);
             expectEquals (msg[1].getFloat32(), testFloat);
             expectEquals (msg[2].getString(), testString);
             expect (msg[3].getBlob() == testBlob);
             expect (msg[4].getColour().toInt32() == testColour.toInt32());
+            expectEquals (msg[5].getBoolean(), testBool);
 
             expect (msg.begin() + numTestArgs == msg.end());
 
@@ -168,6 +174,9 @@ public:
             ++arg;
             expect (arg->isColour());
             expect (arg->getColour().toInt32() == testColour.toInt32());
+            ++arg;
+            expect (arg->isBoolean());
+            expectEquals (arg->getBoolean(), testBool);
             ++arg;
             expect (arg == msg.end());
         }
@@ -201,7 +210,14 @@ public:
                 expectEquals (msg[0].getString(), testString);
             }
             {
-                OSCMessage msg ("/test", testInt, testFloat, testString, testFloat, testInt);
+                OSCMessage msg ("/test", testBool);
+                expect (msg.getAddressPattern().toString() == String ("/test"));
+                expectEquals (msg.size(), 1);
+                expect (msg[0].isBoolean());
+                expectEquals (msg[0].getBoolean(), testBool);
+            }
+            {
+                OSCMessage msg ("/test", testInt, testFloat, testString, testFloat, testInt, testBool);
                 expect (msg.getAddressPattern().toString() == String ("/test"));
                 expectEquals (msg.size(), 5);
                 expect (msg[0].isInt32());
@@ -209,12 +225,14 @@ public:
                 expect (msg[2].isString());
                 expect (msg[3].isFloat32());
                 expect (msg[4].isInt32());
+                expect (msg[5].isBoolean());
 
                 expectEquals (msg[0].getInt32(), testInt);
                 expectEquals (msg[1].getFloat32(), testFloat);
                 expectEquals (msg[2].getString(), testString);
                 expectEquals (msg[3].getFloat32(), testFloat);
                 expectEquals (msg[4].getInt32(), testInt);
+                expectEquals (msg[5].getBoolean(), testBool);
             }
         }
     }

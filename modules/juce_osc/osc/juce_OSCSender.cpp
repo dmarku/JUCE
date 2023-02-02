@@ -62,7 +62,12 @@ namespace
         {
             return output.writeFloatBigEndian (value);
         }
-
+        
+        bool writeBoolean (bool value)
+        {
+            return output.writeBool (value);
+        }
+        
         bool writeString (const String& value)
         {
             if (! output.writeString (value))
@@ -128,6 +133,7 @@ namespace
                 case OSCTypes::string:      return writeString (arg.getString());
                 case OSCTypes::blob:        return writeBlob (arg.getBlob());
                 case OSCTypes::colour:      return writeColour (arg.getColour());
+                case OSCTypes::boolean:     return writeBoolean(arg.getBoolean());
 
                 default:
                     // In this very unlikely case you supplied an invalid OSCType!
@@ -459,6 +465,16 @@ public:
 
             }
             {
+                // boolean:
+                OSCArgument arg (testBool);
+                OSCOutputStream outStream;
+                
+                expect (outStream.writeArgument (arg));
+                expect (outStream.getDataSize() == 4);
+                expect (std::memcmp (outStream.getData(), testBoolRepresentation, sizeof (testBoolRepresentation)) == 0);
+                
+            }
+            {
                 // string:
                 expect (testString.length() % 4 != 0); // check whether we actually cover padding
                 static_assert (sizeof (testStringRepresentation) % 4 == 0, "Size must be a multiple of 4");
@@ -577,6 +593,7 @@ public:
                 int32 testInt = -2015;
                 float testFloat = 345.6125f;
                 String testString = "Hello, World!";
+                bool testBool = true;
 
                 const uint8 testBlobData[] = { 0xBB, 0xCC, 0xDD, 0xEE, 0xFF };
                 const MemoryBlock testBlob (testBlobData, sizeof (testBlobData));
@@ -597,6 +614,7 @@ public:
                 msg.addFloat32 (testFloat);
                 msg.addString (testString);
                 msg.addBlob (testBlob);
+                msg.addBoolean (testBool);
 
                 expect (outStream.writeMessage (msg));
                 expect (outStream.getDataSize() == sizeof (check));
@@ -610,6 +628,7 @@ public:
                 int32 testInt = -2015;
                 float testFloat = 345.6125f;
                 String testString = "Hello, World!";
+                bool testBool = true;
                 const uint8 testBlobData[] = { 0xBB, 0xCC, 0xDD, 0xEE, 0xFF };
                 const MemoryBlock testBlob (testBlobData, sizeof (testBlobData));
 
@@ -646,6 +665,7 @@ public:
                 msg1.addFloat32 (testFloat);
                 msg1.addString (testString);
                 msg1.addBlob (testBlob);
+                msg1.addBoolean (testBool);
                 bundle.addElement (msg1);
 
                 OSCMessage msg2 ("/test/2");
