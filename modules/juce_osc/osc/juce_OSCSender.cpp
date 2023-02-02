@@ -128,12 +128,13 @@ namespace
         {
             switch (arg.getType())
             {
-                case OSCTypes::int32:       return writeInt32 (arg.getInt32());
-                case OSCTypes::float32:     return writeFloat32 (arg.getFloat32());
-                case OSCTypes::string:      return writeString (arg.getString());
-                case OSCTypes::blob:        return writeBlob (arg.getBlob());
-                case OSCTypes::colour:      return writeColour (arg.getColour());
-                case OSCTypes::boolean:     return writeBoolean(arg.getBoolean());
+                case OSCTypes::int32:        return writeInt32 (arg.getInt32());
+                case OSCTypes::float32:      return writeFloat32 (arg.getFloat32());
+                case OSCTypes::string:       return writeString (arg.getString());
+                case OSCTypes::blob:         return writeBlob (arg.getBlob());
+                case OSCTypes::colour:       return writeColour (arg.getColour());
+                case OSCTypes::booleanTrue:  return writeBoolean(arg.getBoolean());
+                case OSCTypes::booleanFalse: return writeBoolean(arg.getBoolean());
 
                 default:
                     // In this very unlikely case you supplied an invalid OSCType!

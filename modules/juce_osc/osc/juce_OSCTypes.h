@@ -49,7 +49,8 @@ public:
     static const OSCType int32;
     static const OSCType float32;
     static const OSCType string;
-    static const OSCType boolean;
+    static const OSCType booleanTrue;
+    static const OSCType booleanFalse;
     static const OSCType blob;
     static const OSCType colour;
 
@@ -58,7 +59,8 @@ public:
         return type == OSCTypes::int32
             || type == OSCTypes::float32
             || type == OSCTypes::string
-            || type == OSCTypes::boolean
+            || type == OSCTypes::booleanTrue
+            || type == OSCTypes::booleanFalse
             || type == OSCTypes::blob
             || type == OSCTypes::colour;
     }

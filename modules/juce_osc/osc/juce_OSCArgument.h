@@ -76,8 +76,10 @@ public:
     /** Returns whether the type of the OSCArgument is string. */
     bool isString() const noexcept          { return type == OSCTypes::string; }
     
-    /** Returns whether the type of the OSCArgument is string. */
-    bool isBoolean() const noexcept          { return type == OSCTypes::boolean; }
+    /** Returns whether the type of the OSCArgument is boolean. */
+    bool isBoolean() const noexcept          {
+        return type == OSCTypes::booleanTrue || type == OSCTypes::booleanFalse;
+    }
 
     /** Returns whether the type of the OSCArgument is blob. */
     bool isBlob() const noexcept            { return type == OSCTypes::blob; }
@@ -95,6 +97,9 @@ public:
     */
     float getFloat32() const noexcept;
     
+    /** Returns the value of the OSCArgument as a boolean.
+     If the type of the OSCArgument is not boolean, the behaviour is undefined.
+     */
     bool getBoolean() const noexcept;
 
     /** Returns the value of the OSCArgument as a string.

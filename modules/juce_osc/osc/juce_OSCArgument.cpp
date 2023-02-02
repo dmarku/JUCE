@@ -29,7 +29,9 @@ namespace juce
 OSCArgument::OSCArgument (int32 v)              : type (OSCTypes::int32),   intValue (v) {}
 OSCArgument::OSCArgument (float v)              : type (OSCTypes::float32), floatValue (v) {}
 OSCArgument::OSCArgument (const String& s)      : type (OSCTypes::string),  stringValue (s) {}
-OSCArgument::OSCArgument (bool  B)              : type (OSCTypes::boolean),  boolValue (B) {}
+OSCArgument::OSCArgument (bool  B)              : boolValue (B) {
+    type = B ? OSCTypes::booleanTrue : OSCTypes::booleanFalse;
+}
 OSCArgument::OSCArgument (MemoryBlock b)        : type (OSCTypes::blob),    blob (std::move (b)) {}
 OSCArgument::OSCArgument (OSCColour c)          : type (OSCTypes::colour),  intValue ((int32) c.toInt32()) {}
 
