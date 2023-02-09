@@ -46,6 +46,7 @@ public:
     /** Constructs an OSCArgument with type float32 and a given value. */
     OSCArgument (float value);
     
+    /** Constructs an OSCArgument with type booleanTrue or booleanFalse and a given value. */
     OSCArgument (bool value);
 
     /** Constructs an OSCArgument with type string and a given value */
@@ -131,7 +132,6 @@ private:
         
     };
     
-    bool boolValue;
     String stringValue;
     MemoryBlock blob;
 };

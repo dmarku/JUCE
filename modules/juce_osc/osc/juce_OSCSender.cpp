@@ -65,7 +65,9 @@ namespace
         
         bool writeBoolean (bool value)
         {
-            return output.writeBool (value);
+            // a boolean's value is encoded in the type character, any data is invalid according to
+            // the OSC protocol. Therefore do NOT send any data.
+            //return output.writeBool (value);
         }
         
         bool writeString (const String& value)
